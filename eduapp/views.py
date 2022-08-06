@@ -1,10 +1,10 @@
-from django.shortcuts import render,HttpResponse
+from django.shortcuts import render
 
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse('Hello, world. You are at the edsweep index.')
+    return render(request,"eduapp/index.html")
 
 
 def react(request):

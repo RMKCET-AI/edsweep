@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="http://fonts.cdnfonts.com/css/varino" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+
+        .container-fluid {
+            padding: 10%;
+            text-align: center;
+            background:repeating-linear-gradient(#E0C4FD,#8FC6FD);
+        }
+
+        #custom-search-input {
+            margin: 0;
+            margin-top: 10px;
+            padding: 0;
+        }
+
+        #custom-search-input .search-query {
+            width: 100%;
+            height: 50px;
+            padding-right: 3px;
+            padding-left: 15px;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 10px;
+            margin-top: 30px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 20px;
+        }
+
+        #custom-search-input button {
+            border: 0;
+            background: none;
+            /** belows styles are working good */
+            padding: 2px 5px;
+            margin-top: 40px;
+            position: absolute;
+            right: 0;
+            /* IE7-8 doesn't have border-radius, so don't indent the padding */
+            margin-bottom: 0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            color: #D9230F;
+            cursor: unset;
+            z-index: 2;
+        }
+
+        .search-query :focus{
+            z-index: 2;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div class="container-fluid">
+	<div class="row">
+	    <div class="col-12"><h1 style="font-family:'Varino', sans-serif">EDUSWEEP</h1></div>
+	    <div class="col-12">
+    	    <div id="custom-search-input">
+                <div class="input-group" style="margin-bottom: 20px">
+                    <input type="text" class="search-query form-control" placeholder="what are you looking for...?" />
+                    <span class="input-group-btn">
+                        <button type="button" disabled>
+                            <span class="fa fa-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+</body>
+</html>
