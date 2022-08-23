@@ -9,8 +9,6 @@ def sample_analyze_sentiment(documents):
     text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     response = text_analytics_client.analyze_sentiment(documents, show_opinion_mining=True)
     results = [doc for doc in response if not doc.is_error]
-    for results in results:
-        print(results.id, results.sentiment,results.confidence_scores)
     return results
 
 
@@ -24,5 +22,6 @@ if __name__ == "__main__":
         """I only have one word for my experience: WOW!!! I can't believe I have had such a wonderful skydiving company right
             in my backyard this whole time! I will definitely be a repeat customer, and I want to take my grandmother skydiving too,
         I know she'll love it!""",
-        """Fuck You Waste product"""
+        "waste of time",
+        "ok"
     ])

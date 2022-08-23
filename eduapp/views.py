@@ -4,15 +4,19 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
 from .scrap import getVideos
-
+from django.core.paginator import Paginator
 
 # Create your views here
 
 def index(request):
-    if request.method == 'POST':
-        videos = getVideos(request.POST['search_query'])
-        return render(request, 'eduapp/index.html', {'videos': videos})
     return render(request, 'eduapp/index.html')
+
+def results(request,search_query):
+    videos = sorted(getVideos(search_query,20),key=lambda x: x.score,reverse=True)
+    paginator = Paginator(videos, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'eduapp/index.html', {'page_obj': page_obj})
 
 
 def player(request, video_url):

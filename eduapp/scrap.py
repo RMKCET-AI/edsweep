@@ -1,55 +1,93 @@
 import os
-
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
+from eduapp.nlp import sample_analyze_sentiment
 
-class Videos:
-    def __init__(self,video_id,title,type = None,thumbnail = None):
+
+class Video:
+    def __init__(self, video_id, title, type=None, thumbnail=None):
         self.video_id = video_id
         self.title = title
         self.type = type
         self.thumbnail = thumbnail
         self.comments = []
+        self.captions = []
+        self.score = 0
 
 
-def getVideos(search_query):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyDfmfiL6GTPfQCruZiVahJ74FOp1vWEVCc')
+def getVideos(search_query, count=10):
+    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
     search_response = json.dumps(youtube_service.search().list(
         q=search_query,
         part='id,snippet',
-        maxResults=10
+        maxResults=count
     ).execute()['items'], indent=4)
     videos = []
+
     for item in json.loads(search_response):
         video_title = item['snippet']['title']
         video_type = item['id']['kind']
         video_thumbnail = item['snippet']['thumbnails']['medium']['url']
         if video_type == 'youtube#video':
             video_id = item['id']['videoId']
-            videos.append(Videos(video_id,video_title,video_type,video_thumbnail))
-            videos[-1].comments = getComments(video_id)
-        #elif video_type == 'youtube#playlist':
-        #    video_id = item['id']['playlistId']
-        #    videos.append(Videos(video_id,video_title,video_type,video_thumbnail))
-    for video in videos:
-        print(video.video_id)
-        print(video.title)
-        print(video.type)
-        print(video.thumbnail)
+            video_stats = youtube_service.videos().list(
+                part='statistics',
+                id=video_id
+            ).execute()['items']
+            likes_count = int(video_stats[0]['statistics']['likeCount'])
+            views_count = int(video_stats[0]['statistics']['viewCount'])
+            comments_count = int(video_stats[0]['statistics']['commentCount'])
+            currVideo = Video(video_id, video_title, video_type, video_thumbnail)
+            videos.append(currVideo)
+            currVideo.comments = getComments(video_id)
+            sentimentObjs = sample_analyze_sentiment(currVideo.comments)
+            positiveComments, negativeComments, neutralComments = 0, 0, 0
+            for comment in sentimentObjs:
+                if comment.sentiment == 'positive':
+                    positiveComments += 1
+                elif comment.sentiment == 'negative':
+                    negativeComments += 1
+                else:
+                    neutralComments += 1
+            currVideo.score = (positiveComments - negativeComments) / (
+                        positiveComments + negativeComments + neutralComments)
+            currVideo.score *= 100
+            currVideo.score += (likes_count / views_count)*100
+            currVideo.score = round(currVideo.score, 2)
+            currVideo.score = min(currVideo.score,97.32)
+            print(currVideo.score, "nlp score")
+
     return videos
 
-def getComments(video_id):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyDfmfiL6GTPfQCruZiVahJ74FOp1vWEVCc')
+
+def getCaptions(video_id):
+    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
+    search_response = json.dumps(youtube_service.captions().list(
+        part='snippet,id,statistics',
+        videoId=video_id,
+    ).execute()['items'], indent=4)
+    print(search_response)
+    for item in json.loads(search_response):
+        print(item)
+        print(youtube_service.captions.Download(item['id']))
+    print(search_response)
+
+
+def getComments(video_id, count=10):
+    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
     search_response = json.dumps(youtube_service.commentThreads().list(
         videoId=video_id,
         part='snippet',
-        maxResults=15
+        maxResults=count
     ).execute()['items'], indent=4)
     comments = []
     for item in json.loads(search_response):
         comments.append(item['snippet']['topLevelComment']['snippet']['textDisplay'])
     return comments
+
+
 if __name__ == "__main__":
     getVideos("python")
-    #getComments(video_id="t8pPdKYpowI")
+    # getComments(video_id="t8pPdKYpowI")
+    # getCaptions(video_id="t8pPdKYpowI")
