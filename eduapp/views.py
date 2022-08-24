@@ -12,7 +12,10 @@ def index(request):
     return render(request, 'eduapp/index.html')
 
 def results(request,search_query):
-    videos = sorted(getVideos(search_query,20),key=lambda x: x.score,reverse=True)
+    videos = getVideos(search_query,20)
+    video_scores = sorted([video.score for video in videos],reverse=True)
+    for index in range(len(videos)):
+        videos[index].score = video_scores[index]
     paginator = Paginator(videos, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

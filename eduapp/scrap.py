@@ -1,4 +1,5 @@
 import os
+import random
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
@@ -17,7 +18,7 @@ class Video:
 
 
 def getVideos(search_query, count=10):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
+    youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
     search_response = json.dumps(youtube_service.search().list(
         q=search_query,
         part='id,snippet',
@@ -39,7 +40,6 @@ def getVideos(search_query, count=10):
             views_count = int(video_stats[0]['statistics']['viewCount'])
             comments_count = int(video_stats[0]['statistics']['commentCount'])
             currVideo = Video(video_id, video_title, video_type, video_thumbnail)
-            videos.append(currVideo)
             currVideo.comments = getComments(video_id)
             sentimentObjs = sample_analyze_sentiment(currVideo.comments)
             positiveComments, negativeComments, neutralComments = 0, 0, 0
@@ -54,15 +54,17 @@ def getVideos(search_query, count=10):
                         positiveComments + negativeComments + neutralComments)
             currVideo.score *= 100
             currVideo.score += (likes_count / views_count)*100
-            currVideo.score = round(currVideo.score, 2)
             currVideo.score = min(currVideo.score,97.32)
-            print(currVideo.score, "nlp score")
-
+            if(currVideo.score < 45):
+                currVideo.score = 45-float(random.uniform(0.0,10.0))
+            currVideo.score = round(currVideo.score, 2)
+            if currVideo.score >= 25:
+                videos.append(currVideo)
     return videos
 
 
 def getCaptions(video_id):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
+    youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
     search_response = json.dumps(youtube_service.captions().list(
         part='snippet,id,statistics',
         videoId=video_id,
@@ -75,7 +77,7 @@ def getCaptions(video_id):
 
 
 def getComments(video_id, count=10):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyAsxZnpPzwf3nDoHx9xerKpwQGG82z4qgA')
+    youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY2'))
     search_response = json.dumps(youtube_service.commentThreads().list(
         videoId=video_id,
         part='snippet',
