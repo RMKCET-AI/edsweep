@@ -3,6 +3,7 @@ import random
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import json
+import requests
 from eduapp.nlp import sample_analyze_sentiment
 
 
@@ -54,9 +55,9 @@ def getVideos(search_query, count=10):
                         positiveComments + negativeComments + neutralComments)
             currVideo.score *= 100
             currVideo.score += (likes_count / views_count)*100
+            if currVideo.score < 10:
+                print(currVideo.score)
             currVideo.score = min(currVideo.score,97.32)
-            if(currVideo.score < 45):
-                currVideo.score = 45-float(random.uniform(0.0,10.0))
             currVideo.score = round(currVideo.score, 2)
             if currVideo.score >= 25:
                 videos.append(currVideo)

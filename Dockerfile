@@ -8,17 +8,9 @@ ADD . /app
 
 COPY ./requirements.txt /app/requirements.txt
 
-RUN apt-get update
 
-# RUN apt-get upgrade
+RUN pip3 install -r requirements.txt
 
-RUN pip install --upgrade pip setuptools --user --no-cache-dir
-
-RUN pip install -r requirements.txt
-
-RUN apt-get install -y nodejs
-
-RUN apt-get install -y npm
 
 COPY . /app
 
