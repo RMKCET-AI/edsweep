@@ -4,8 +4,8 @@ from azure.ai.textanalytics import TextAnalyticsClient
 
 
 def sample_analyze_sentiment(documents):
-    endpoint = "https://edsweep.cognitiveservices.azure.com/"
-    key = "ce2070b4d70b42ccb6332998a5e56e9b"
+    endpoint = os.environ.get('TEXT_ANALYTICS_ENDPOINT')
+    key = os.environ.get('TEXT_ANALYTICS_KEY')
     text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     response = text_analytics_client.analyze_sentiment(documents, show_opinion_mining=True)
     results = [doc for doc in response if not doc.is_error]
