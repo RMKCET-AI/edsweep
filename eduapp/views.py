@@ -6,18 +6,17 @@ import json
 from .scrap import getVideos
 from django.core.paginator import Paginator
 from .models import ContentFilter
+from .web_scrap import getWebVideos
+
 
 # Create your views here
 
 def index(request):
     return render(request, 'eduapp/index.html')
 
-def results(request,search_query):
-    videos = sorted(getVideos(search_query, 20), key=lambda x: x.score, reverse=True)
-    for video in videos:
-        if video.score <= 25:
-            ContentFilter(video.video_id).save()
 
+def results(request, search_query):
+    videos = getWebVideos(search_query, 20)
     paginator = Paginator(videos, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -27,11 +26,11 @@ def results(request,search_query):
 def player(request, video_url):
     return render(request, 'eduapp/player.html', {'video_url': video_url})
 
+
 def apiResults(request, search_query):
-    videos = sorted(getVideos(search_query, 20),key= lambda ele : ele.score,reverse= True)
+    videos = sorted(getVideos(search_query, 20), key=lambda ele: ele.score, reverse=True)
     # video_scores = sorted([video.score for video in videos], reverse=True)
     # for index in range(len(videos)):
     #    videos[index].score = video_scores[index]
     json_response = json.dumps([video.__dict__ for video in videos], indent=4)
     return HttpResponse(json_response, 'application/json charset=utf-8')
-
