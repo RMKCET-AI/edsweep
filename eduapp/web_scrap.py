@@ -91,6 +91,7 @@ def getWebVideos(search_query, count=20):
                 videos[-1].comments = getComments(video_id)
                 videos[-1].video_id = video_id
                 print(videos[-1].comments)
+        videos = list(filter(lambda x: x.source == 'youtube', videos))
     except Exception as ex:
         print(ex)
     return videos
