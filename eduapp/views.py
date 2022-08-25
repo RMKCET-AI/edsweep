@@ -16,7 +16,8 @@ def index(request):
 
 
 def results(request, search_query):
-    videos = getWebVideos(search_query, 20)
+    videos = sorted(getWebVideos(search_query, 20),key= lambda video : video.get_score(), reverse=True)
+
     paginator = Paginator(videos, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

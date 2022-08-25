@@ -3,6 +3,9 @@ import os
 import requests
 from pprint import pprint
 from eduapp.scrap import getComments
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from .nlp import sample_analyze_sentiment
 
 class Video:
     def __init__(self, video_title=None, video_description=None, thumbnail_url=None, creator=None,
@@ -23,7 +26,33 @@ class Video:
         self.video_id = None
         self.comments = comments
         self.score = score
-
+    def get_score(self):
+        youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
+        video_stats = youtube_service.videos().list(
+            part='statistics',
+            id=self.video_id
+        ).execute()['items']
+        likes_count = int(video_stats[0]['statistics']['likeCount'])
+        views_count = int(video_stats[0]['statistics']['viewCount'])
+        comments_count = int(video_stats[0]['statistics']['commentCount'])
+        sentimentObjs = sample_analyze_sentiment(self.comments)
+        positiveComments, negativeComments, neutralComments = 0, 0, 0
+        for comment in sentimentObjs:
+            if comment.sentiment == 'positive':
+                positiveComments += 1
+            elif comment.sentiment == 'negative':
+                negativeComments += 1
+            else:
+                neutralComments += 1
+        self.score = (positiveComments - negativeComments) / (
+                positiveComments + negativeComments + neutralComments)
+        self.score *= 100
+        self.score += (likes_count / views_count) * 100
+        if self.score < 10:
+            print(self.score)
+        self.score = min(self.score, 97.32)
+        self.score = round(self.score, 2)
+        return self.score
 
 def getWebVideos(search_query, count=20):
     videos = []
