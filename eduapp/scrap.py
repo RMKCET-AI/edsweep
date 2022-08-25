@@ -76,7 +76,7 @@ def getCaptions(video_id):
 
 
 def getComments(video_id, count=10):
-    youtube_service = build('youtube', 'v3', developerKey='AIzaSyDfmfiL6GTPfQCruZiVahJ74FOp1vWEVCc')
+    youtube_service = build('youtube', 'v3', developerKey=os.environ.get("YOUTUBE_API_KEY2"))
     search_response = json.dumps(youtube_service.commentThreads().list(
         videoId=video_id,
         part='snippet',
