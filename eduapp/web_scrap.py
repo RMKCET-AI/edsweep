@@ -56,5 +56,6 @@ def getWebVideos(search_query, count=10):
         print(ex)
     return videos
 
- if __name__ == "__main__":
+
+if __name__ == "__main__":
     print(getWebVideos("python tutorial"))
