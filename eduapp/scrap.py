@@ -28,39 +28,42 @@ def getVideos(search_query, count=10):
     videos = []
 
     for item in json.loads(search_response):
-        video_title = item['snippet']['title']
-        video_type = item['id']['kind']
-        video_thumbnail = item['snippet']['thumbnails']['medium']['url']
-        if video_type == 'youtube#video':
-            video_id = item['id']['videoId']
-            video_stats = youtube_service.videos().list(
-                part='statistics',
-                id=video_id
-            ).execute()['items']
-            likes_count = int(video_stats[0]['statistics']['likeCount'])
-            views_count = int(video_stats[0]['statistics']['viewCount'])
-            comments_count = int(video_stats[0]['statistics']['commentCount'])
-            currVideo = Video(video_id, video_title, video_type, video_thumbnail)
-            currVideo.comments = getComments(video_id)
-            sentimentObjs = sample_analyze_sentiment(currVideo.comments)
-            positiveComments, negativeComments, neutralComments = 0, 0, 0
-            for comment in sentimentObjs:
-                if comment.sentiment == 'positive':
-                    positiveComments += 1
-                elif comment.sentiment == 'negative':
-                    negativeComments += 1
-                else:
-                    neutralComments += 1
-            currVideo.score = (positiveComments - negativeComments) / (
-                        positiveComments + negativeComments + neutralComments)
-            currVideo.score *= 100
-            currVideo.score += (likes_count / views_count)*100
-            if currVideo.score < 10:
-                print(currVideo.score)
-            currVideo.score = min(currVideo.score,97.32)
-            currVideo.score = round(currVideo.score, 2)
-            if currVideo.score >= 25:
-                videos.append(currVideo)
+        try:
+            video_title = item['snippet']['title']
+            video_type = item['id']['kind']
+            video_thumbnail = item['snippet']['thumbnails']['medium']['url']
+            if video_type == 'youtube#video':
+                video_id = item['id']['videoId']
+                video_stats = youtube_service.videos().list(
+                    part='statistics',
+                    id=video_id
+                ).execute()['items']
+                likes_count = int(video_stats[0]['statistics']['likeCount'])
+                views_count = int(video_stats[0]['statistics']['viewCount'])
+                comments_count = int(video_stats[0]['statistics']['commentCount'])
+                currVideo = Video(video_id, video_title, video_type, video_thumbnail)
+                currVideo.comments = getComments(video_id)
+                sentimentObjs = sample_analyze_sentiment(currVideo.comments)
+                positiveComments, negativeComments, neutralComments = 0, 0, 0
+                for comment in sentimentObjs:
+                    if comment.sentiment == 'positive':
+                        positiveComments += 1
+                    elif comment.sentiment == 'negative':
+                        negativeComments += 1
+                    else:
+                        neutralComments += 1
+                currVideo.score = (positiveComments - negativeComments) / (
+                            positiveComments + negativeComments + neutralComments)
+                currVideo.score *= 100
+                currVideo.score += (likes_count / views_count)*100
+                if currVideo.score < 10:
+                    print(currVideo.score)
+                currVideo.score = min(currVideo.score,97.32)
+                currVideo.score = round(currVideo.score, 2)
+                if currVideo.score >= 25:
+                    videos.append(currVideo)
+        except:
+            pass
     return videos
 
 
