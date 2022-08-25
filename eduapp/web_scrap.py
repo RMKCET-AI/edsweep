@@ -5,7 +5,9 @@ from pprint import pprint
 from eduapp.scrap import getComments
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from .nlp import sample_analyze_sentiment
+from eduapp.nlp import sample_analyze_sentiment
+from youtube_transcript_api import YouTubeTranscriptApi
+
 
 class Video:
     def __init__(self, video_title=None, video_description=None, thumbnail_url=None, creator=None,
@@ -54,6 +56,12 @@ class Video:
         self.score = round(self.score, 2)
         return self.score
 
+    def getCaptions(video_id):
+        captions = []
+        for value in YouTubeTranscriptApi.get_transcript(video_id, languages=['en']):
+            captions.append(value['text'])
+        return captions
+
 def getWebVideos(search_query, count=20):
     videos = []
     subscriptionKey = "864b23f082d74615ae0925a0f0bbfa69"
@@ -98,4 +106,5 @@ def getWebVideos(search_query, count=20):
 
 
 if __name__ == "__main__":
-    print(getWebVideos("python tutorial"))
+    #print(getWebVideos("python tutorial"))
+    print(Video.getCaptions("t8pPdKYpowI"))

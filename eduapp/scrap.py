@@ -122,3 +122,4 @@ if __name__ == "__main__":
     # getVideos("python")
     # getComments(video_id="t8pPdKYpowI")
     print(getCaptions(video_id="t8pPdKYpowI"))
+    print()
