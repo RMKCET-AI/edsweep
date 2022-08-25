@@ -171,39 +171,6 @@
 <br><br>
 <div class="container">
     <div class="row">
-        <!--div class="col-md-4">
-            <div class="card" style="max-width: 100%;max-height: 100%">
-                <img src="{% static "eduapp/images/img.png" %}" class="card-img-top rounded" style="max-width: 100%;"
-                     alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Database</h5>
-                    <p class="card-text">Click the video to explore...</p>
-                    <p class="card-text"><small class="text-muted">Video Quality Score : 85</small></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="max-width: 100%;max-height: 100%">
-                <img src="{% static "eduapp/images/img_1.png" %}" class="card-img-top rounded" style="max-width: 100%;"
-                     alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Cyber Security</h5>
-                    <p class="card-text">Click the video to explore...</p>
-                    <p class="card-text"><small class="text-muted">Video Quality Score : 76</small></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="max-width: 100%;max-height: 100%">
-                <img src="{% static "eduapp/images/img_2.png" %}" class="card-img-top rounded" style="max-width: 100%;"
-                     alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">React js</h5>
-                    <p class="card-text">Click the video to explore...</p>
-                    <p class="card-text"><small class="text-muted">Video Quality Score : 82</small></p>
-                </div>
-            </div>
-        </div-->
         {% for video in page_obj %}
             <div class="col-md-4">
                 <div class="card" style="max-width: 100%;max-height: 100%">
@@ -216,7 +183,11 @@
                         <p class="card-text"><small class="text-muted">Video Quality Score : {{ video.score }}</small></p>
                     </div>
                     <div class="container my-3">
-                        <a href="/player/{{ video.video_id }}" class="btn btn-success">Show</a>
+                        {% if video.source == 'youtube' %}
+                            <a href="/player/{{ video.video_id }}" class="btn btn-success">Show</a>
+                        {% else %}
+                            <a href="{{ video.video_url }}" target="_blank" class="btn btn-success">Show</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

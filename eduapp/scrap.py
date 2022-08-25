@@ -5,6 +5,8 @@ from googleapiclient.errors import HttpError
 import json
 import requests
 from eduapp.nlp import sample_analyze_sentiment
+from bs4 import BeautifulSoup
+from youtube_transcript_api import YouTubeTranscriptApi
 
 
 class Video:
@@ -68,20 +70,13 @@ def getVideos(search_query, count=10):
 
 
 def getCaptions(video_id):
-    youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
-    search_response = json.dumps(youtube_service.captions().list(
-        part='snippet,id,statistics',
-        videoId=video_id,
-    ).execute()['items'], indent=4)
-    print(search_response)
-    for item in json.loads(search_response):
-        print(item)
-        print(youtube_service.captions.Download(item['id']))
-    print(search_response)
-
+    captions = []
+    for value in YouTubeTranscriptApi.get_transcript(video_id,languages=['en']):
+        captions.append(value['text'])
+    return captions
 
 def getComments(video_id, count=10):
-    youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY2'))
+    youtube_service = build('youtube', 'v3', developerKey='AIzaSyDfmfiL6GTPfQCruZiVahJ74FOp1vWEVCc')
     search_response = json.dumps(youtube_service.commentThreads().list(
         videoId=video_id,
         part='snippet',
@@ -89,11 +84,11 @@ def getComments(video_id, count=10):
     ).execute()['items'], indent=4)
     comments = []
     for item in json.loads(search_response):
-        comments.append(item['snippet']['topLevelComment']['snippet']['textDisplay'])
+        comments.append(BeautifulSoup(item['snippet']['topLevelComment']['snippet']['textDisplay'],'html.parser').get_text())
     return comments
 
 
 if __name__ == "__main__":
-    getVideos("python")
+    # getVideos("python")
     # getComments(video_id="t8pPdKYpowI")
-    # getCaptions(video_id="t8pPdKYpowI")
+    print(getCaptions(video_id="t8pPdKYpowI"))
