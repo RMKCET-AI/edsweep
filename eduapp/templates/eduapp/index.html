@@ -145,12 +145,17 @@
         <video autoplay loop muted playsinline class="back-video">
             <source src="{% static "eduapp/videos/videoooo.mp4" %}" type="video/mp4">
         </video>
+
         <nav class="header">
-            <img src="{% static "eduapp/images/logo6.png" %}" class="logo">
-            <ul>
+            <a class="navbar-brand" href="{% url 'index' %}" style="font-size: 35px; text-decoration: none">
+            <img src="{% static 'eduapp/images/logo6.png' %}" alt="AI" width="70"
+                 height="70">
+            </a>
+
+            <!--ul>
                 <li><a href="#">HOME</a></li>
                 <li><a href="#">CONTACT US</a></li>
-            </ul>
+            </ul-->
         </nav>
         <div class="col-12"><h1 style="font-family: 'Varino',sans-serif">EDSWEEP</h1></div>
         {% csrf_token %}
@@ -232,6 +237,71 @@
 </div>
 <br>
 <br>
+<footer class="bd-footer py-0 bg-white">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-3 mb-3">
+                <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="/"
+                   aria-label="Bootstrap">
+                    <!--img src="{% static "eduapp/images/logo6.png" %}" width="50" height="50"-->
+                    <span class="fs-4" style="font-family:'Lucida Sans' ">EDSWEEP</span>
+                </a>
+                <ul class="list-unstyled small text-muted">
+                    <li class="mb-2">Designed and Built by the students RMKCET.<br>- Tiny Coders 2k22.
+                    </li>
+                    <li class="mb-2">Contact us <a href="mailto:edsweep2k22@gmail.com">@TinyCoders2k22</a>
+                    </li>
+                    <li class="mb-2">Code licensed <a href="#">GNU 3.1</a>
+                    </li>
+                    <li class="mb-2 ">Currently v1.0.9</li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2 offset-lg-1 mb-3">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="https://www.education.gov.in/en">MHRD</a></li>
+                    <li class="mb-2"><a href="https://www.aicte-india.org/">AICTE</a></li>
+                    <li class="mb-2"><a href="https://www.e-yantra.org/">E-YANTRA</a></li>
+                    <li class="mb-2"><a href="meity.gov.in">MEITY</a></li>
+                    <li class="mb-2"><a href="mailto:spal.1999@meity.gov.in">Mail@MEITY</a></li>
+
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2 mb-3">
+                <h5>Tech Articles</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="https://www.bbc.com/news/technology">BBC</a></li>
+                    <li class="mb-2"><a href="https://www.nytimes.com/international/section/technology">NY Times</a>
+                    </li>
+                    <li class="mb-2"><a href="https://www.quora.com/">Quora</a></li>
+                    <li class="mb-2"><a href="https://www.popsci.com/technology/">Popular Science</a></li>
+                    <li class="mb-2"><a href="https://www.newscientist.com/subject/technology//">NewScientist</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2 mb-3">
+                <h5>Self-Learning</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="https://skillrack.com/">SkillRack</a></li>
+                    <li class="mb-2"><a href="https://swayam.gov.in/">Swayam-NPTEL</a></li>
+                    <li class="mb-2"><a href="https://www.freecodecamp.org/">FreeCodeCamp</a></li>
+                    <li class="mb-2"><a href="https://www.udemy.com/">Udemy</a></li>
+                    <li class="mb-2"><a href="https://www.codecademy.com/">Codecademy</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2 mb-3">
+                <h5>Community</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="https://github.com/RMKCET-AI/edsweep">GitHub</a></li>
+                    <li class="mb-2"><a href="https://www.instagram.com/edsweep_2k22/">Instagram</a></li>
+                    <li class="mb-2"><a href="https://in.linkedin.com/company/rmkect-institution">Linked-in</a></li>
+                    <li class="mb-2"><a href="https://twitter.com/edsweep_2k22">Twitter</a></li>
+                    <li class="mb-2"><a href="https://www.youtube.com/channel/UCey8OFCvQkiITgRRfRsItcg">YouTube</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
