@@ -7,7 +7,9 @@ from .scrap import getVideos
 from django.core.paginator import Paginator
 from .models import ContentFilter
 from .web_scrap import getWebVideos
+from .models import VideoCache
 
+allVideos = {}
 
 # Create your views here
 
@@ -16,8 +18,12 @@ def index(request):
 
 
 def results(request, search_query):
-    videos = sorted(getWebVideos(search_query, 20),key= lambda video : video.get_score(), reverse=True)
-
+    if search_query not in allVideos:
+        videos = sorted(getWebVideos(search_query, 20), key=lambda video: video.get_score(), reverse=True)
+        allVideos[search_query] = videos
+    else:
+        print("Using cached results")
+        videos = allVideos[search_query]
     paginator = Paginator(videos, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
