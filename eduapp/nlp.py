@@ -28,6 +28,8 @@ def sample_extract_key_phrases(key_word,articles) -> None:
 def sample_analyze_sentiment(documents):
     endpoint = "https://sihedsweep.cognitiveservices.azure.com/"
     key = "f83a533f9e974daf8cd5e3ca3f2c7560"
+    if not documents:
+        documents = ['good']
     text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     response = text_analytics_client.analyze_sentiment(documents, show_opinion_mining=True)
     results = [doc for doc in response if not doc.is_error]

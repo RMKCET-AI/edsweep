@@ -10,6 +10,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import os
+import random
 
 
 
@@ -56,7 +57,7 @@ class Video:
         self.score += (likes_count / views_count) * 100
         if self.score < 10:
             print(self.score)
-        self.score = min(self.score, 97.32)
+        self.score = min(self.score, 97.32-random.uniform(3,7))
         self.score = round(self.score, 2)
         return self.score
 

@@ -127,4 +127,3 @@ if __name__ == "__main__":
     # getComments(video_id="t8pPdKYpowI")
     # print(getCaptions(video_id="t8pPdKYpowI"))
     print()
-    sample_extract_key_phrases()
