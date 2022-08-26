@@ -20,7 +20,8 @@
             width: 100%;
             height: 100vh;
             background-image: linear-gradient(rgba(12, 3, 51, 0.3), rgba(12, 3, 51, 0.3));
-            padding: 0.5%;
+            padding: 0 5%;
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -84,7 +85,7 @@
             width: 90px;
         }
 
-        nav ul li {
+        /*nav ul li {
             list-style: none;
             display: inline-block;
             margin-left: 40px;
@@ -94,7 +95,7 @@
             text-decoration: none;
             color: #fff;
             font-size: 17px;
-        }
+        }*/
 
         .col-12 {
             text-align: center;
@@ -102,11 +103,12 @@
 
         .col-12 h1 {
 
-            font-size: 100px;
+            font-size: 90px;
             color: #fff;
-            font-weight: 600;
+            font-weight: 400;
             transition: 0.5s;
         }
+
 
         .col-12:hover {
             -webkit-text-stroke: 1px black;
@@ -134,6 +136,12 @@
                 height: 100%;
             }
         }
+        *{
+            margin:0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
 
     </style>
@@ -141,11 +149,10 @@
 <body onload="stopLoading()">
 
 <div class="container-fluid">
-    <div class="row">
-        <video autoplay loop muted playsinline class="back-video">
+    <video autoplay loop muted playsinline class="back-video">
             <source src="{% static "eduapp/videos/videoooo.mp4" %}" type="video/mp4">
         </video>
-
+    <div class="row">
         <nav class="header">
             <a class="navbar-brand" href="{% url 'index' %}" style="font-size: 35px; text-decoration: none">
             <img src="{% static 'eduapp/images/logo6.png' %}" alt="AI" width="70"
@@ -241,13 +248,13 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-lg-3 mb-3">
-                <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="/"
+                <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none"
                    aria-label="Bootstrap">
                     <!--img src="{% static "eduapp/images/logo6.png" %}" width="50" height="50"-->
                     <span class="fs-4" style="font-family:'Lucida Sans' ">EDSWEEP</span>
                 </a>
                 <ul class="list-unstyled small text-muted">
-                    <li class="mb-2">Designed and Built by the students RMKCET.<br>- Tiny Coders 2k22.
+                    <li class="mb-2">Designed and Built by the students of RMKCET.<br>- Tiny Coders 2k22.
                     </li>
                     <li class="mb-2">Contact us <a href="mailto:edsweep2k22@gmail.com">@TinyCoders2k22</a>
                     </li>
@@ -257,18 +264,18 @@
                 </ul>
             </div>
             <div class="col-6 col-lg-2 offset-lg-1 mb-3">
-                <h5>Quick Links</h5>
+                <h5><b>Quick Links</b></h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="https://www.education.gov.in/en">MHRD</a></li>
                     <li class="mb-2"><a href="https://www.aicte-india.org/">AICTE</a></li>
                     <li class="mb-2"><a href="https://www.e-yantra.org/">E-YANTRA</a></li>
-                    <li class="mb-2"><a href="meity.gov.in">MEITY</a></li>
+                    <li class="mb-2"><a href="https://meity.gov.in">MEITY</a></li>
                     <li class="mb-2"><a href="mailto:spal.1999@meity.gov.in">Mail@MEITY</a></li>
 
                 </ul>
             </div>
             <div class="col-6 col-lg-2 mb-3">
-                <h5>Tech Articles</h5>
+                <h5><b>Tech Articles</b></h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="https://www.bbc.com/news/technology">BBC</a></li>
                     <li class="mb-2"><a href="https://www.nytimes.com/international/section/technology">NY Times</a>
@@ -279,7 +286,7 @@
                 </ul>
             </div>
             <div class="col-6 col-lg-2 mb-3">
-                <h5>Self-Learning</h5>
+                <h5><b>Self-Learning</b></h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="https://skillrack.com/">SkillRack</a></li>
                     <li class="mb-2"><a href="https://swayam.gov.in/">Swayam-NPTEL</a></li>
@@ -289,13 +296,13 @@
                 </ul>
             </div>
             <div class="col-6 col-lg-2 mb-3">
-                <h5>Community</h5>
+                <h5><b>Community</b></h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="https://github.com/RMKCET-AI/edsweep">GitHub</a></li>
                     <li class="mb-2"><a href="https://www.instagram.com/edsweep_2k22/">Instagram</a></li>
-                    <li class="mb-2"><a href="https://in.linkedin.com/company/rmkect-institution">Linked-in</a></li>
+                    <li class="mb-2"><a href="https://www.linkedin.com/in/edsweep-2k-2721b424a/">Linked-in</a></li>
                     <li class="mb-2"><a href="https://twitter.com/edsweep_2k22">Twitter</a></li>
-                    <li class="mb-2"><a href="https://www.youtube.com/channel/UCey8OFCvQkiITgRRfRsItcg">YouTube</a>
+                    <li class="mb-2"><a href="https://www.youtube.com/c/MediaAICTE">YouTube</a>
                     </li>
                 </ul>
             </div>
