@@ -34,7 +34,7 @@ class Video:
         self.comments = comments
         self.score = score
         self.key_phrases = []
-        self.overall_score = np.average(content_match,quality_score , nlp_score)
+        self.overall_score = (content_match+quality_score+nlp_score)/3
 
     def get_score(self):
         youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
@@ -42,7 +42,7 @@ class Video:
             part='statistics',
             id=self.video_id
         ).execute()['items']
-        likes_count = int(video_stats[0]['statistics']['likeCount'])
+        likes_count = int(video_costats[0]['statistics']['likeCount'])
         views_count = int(video_stats[0]['statistics']['viewCount'])
         comments_count = int(video_stats[0]['statistics']['commentCount'])
         sentimentObjs = sample_analyze_sentiment(self.comments)
