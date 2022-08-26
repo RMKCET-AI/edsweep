@@ -48,6 +48,7 @@ class Video:
         sentimentObjs = sample_analyze_sentiment(self.comments)
         positiveComments, negativeComments, neutralComments = 0, 0, 0
         for comment in sentimentObjs:
+            print(comment)
             if comment.sentiment == 'positive':
                 positiveComments += 1
             elif comment.sentiment == 'negative':
@@ -116,7 +117,7 @@ def getWebVideos(search_query, count=20):
         raise ex
     return videos
 
-
+print(Video.getCaptions("t8pPdKYpowI"))
 if __name__ == "__main__":
     # print(getWebVideos("python tutorial"))
-    print(Video.getCaptions("t8pPdKYpowI"))
+    pass
