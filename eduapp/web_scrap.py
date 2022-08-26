@@ -5,18 +5,20 @@ from pprint import pprint
 from eduapp.scrap import getComments
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from eduapp.nlp import sample_analyze_sentiment,sample_extract_key_phrases
+from eduapp.nlp import sample_analyze_sentiment, sample_extract_key_phrases
 from youtube_transcript_api import YouTubeTranscriptApi
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import os
 import random
+import numpy as np
 
 
 class Video:
     def __init__(self, video_title=None, video_description=None, thumbnail_url=None, creator=None,
                  is_accessible_for_free=None, video_url=None, video_sample_url=None, video_iframe=None,
-                 views_count=None, is_new=None,source=None,comments=(),score=None):
+                 views_count=None, is_new=None, source=None, comments=(), score=None, content_match=0,
+                 quality_score=0,nlp_score = 0):
         self.video_title = video_title
         self.video_description = video_description
         self.thumbnail_url = thumbnail_url
@@ -32,6 +34,7 @@ class Video:
         self.comments = comments
         self.score = score
         self.key_phrases = []
+        self.overall_score = np.average(content_match,quality_score , nlp_score)
 
     def get_score(self):
         youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
@@ -57,7 +60,7 @@ class Video:
         self.score += (likes_count / views_count) * 100
         if self.score < 10:
             print(self.score)
-        self.score = min(self.score, 97.32 - random.uniform(3,5))
+        self.score = min(self.score, 97.32 - random.uniform(3, 5))
         self.score = round(self.score, 2)
         return self.score
 
@@ -66,6 +69,7 @@ class Video:
         for value in YouTubeTranscriptApi.get_transcript(video_id, languages=['en']):
             captions.append(value['text'])
         return captions
+
 
 def getWebVideos(search_query, count=20):
     videos = []
@@ -98,7 +102,7 @@ def getWebVideos(search_query, count=20):
             is_new = video_obj['isSuperfresh']
             videos.append(
                 Video(video_title, video_description, thumbnail_url, creator, is_accessible_for_free, video_url,
-                      video_sample_url, video_iframe, views_count, is_new,video_source.lower()))
+                      video_sample_url, video_iframe, views_count, is_new, video_source.lower()))
             if videos[-1].source == 'youtube':
                 video_id = videos[-1].video_url.split('v=')[-1]
                 videos[-1].comments = getComments(video_id)
@@ -114,5 +118,5 @@ def getWebVideos(search_query, count=20):
 
 
 if __name__ == "__main__":
-    #print(getWebVideos("python tutorial"))
+    # print(getWebVideos("python tutorial"))
     print(Video.getCaptions("t8pPdKYpowI"))

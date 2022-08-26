@@ -10,3 +10,6 @@ class VideoCache:
         self.search_query = search_query
         self.videos = videos
 
+class CustomVideo(models.Model):
+    video = models.FileField(upload_to='custom_videos/')
+

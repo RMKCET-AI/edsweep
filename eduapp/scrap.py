@@ -11,8 +11,6 @@ import os
 
 
 
-
-
 class Video:
     def __init__(self, video_id, title, type=None, thumbnail=None):
         self.video_id = video_id
