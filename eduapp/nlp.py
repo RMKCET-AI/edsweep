@@ -40,7 +40,7 @@ def sample_analyze_sentiment(documents):
 
 
 if __name__ == "__main__":
-    '''sample_analyze_sentiment([
+    sample_analyze_sentiment([
         """I had the best day of my life. I decided to go sky-diving and it made me appreciate my whole life so much more.
         I developed a deep-connection with my instructor as well, and I feel as if I've made a life-long friend in her.""",
         """This was a waste of my time. All of the views on this drop are extremely boring, all I saw was grass. 0/10 would
@@ -49,7 +49,7 @@ if __name__ == "__main__":
         """I only have one word for my experience: WOW!!! I can't believe I have had such a wonderful skydiving company right
             in my backyard this whole time! I will definitely be a repeat customer, and I want to take my grandmother skydiving too,
         I know she'll love it!""",
-    ])'''
+    ])
     sample_extract_key_phrases('Python',articles = [
         """
         Whether you're new to programming or an experienced developer, it's easy to learn and use Python.

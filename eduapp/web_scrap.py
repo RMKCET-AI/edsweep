@@ -117,7 +117,7 @@ def getWebVideos(search_query, count=20):
         raise ex
     return videos
 
-print(Video.getCaptions("t8pPdKYpowI"))
+
 if __name__ == "__main__":
     # print(getWebVideos("python tutorial"))
-    pass
+    print(Video.getCaptions("t8pPdKYpowI"))
