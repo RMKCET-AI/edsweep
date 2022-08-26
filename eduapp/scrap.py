@@ -63,7 +63,7 @@ def getVideos(search_query, count=10):
                 currVideo.score += (likes_count / views_count) * 100
                 if currVideo.score < 10:
                     print(currVideo.score)
-                currVideo.score = min(currVideo.score, 97.32)
+                currVideo.score = min(currVideo.score, 100-random.uniform(4,6))
                 currVideo.score = round(currVideo.score, 2)
                 if currVideo.score >= 25:
                     videos.append(currVideo)

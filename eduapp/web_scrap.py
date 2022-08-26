@@ -5,13 +5,12 @@ from pprint import pprint
 from eduapp.scrap import getComments
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from eduapp.nlp import sample_analyze_sentiment
+from eduapp.nlp import sample_analyze_sentiment,sample_extract_key_phrases
 from youtube_transcript_api import YouTubeTranscriptApi
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 import os
 import random
-
 
 
 class Video:
@@ -28,11 +27,12 @@ class Video:
         self.video_iframe = video_iframe
         self.views_count = views_count
         self.is_new = is_new
-        self.score = 0
         self.source = source
         self.video_id = None
         self.comments = comments
         self.score = score
+        self.key_phrases = []
+
     def get_score(self):
         youtube_service = build('youtube', 'v3', developerKey=os.environ.get('YOUTUBE_API_KEY1'))
         video_stats = youtube_service.videos().list(
@@ -57,7 +57,7 @@ class Video:
         self.score += (likes_count / views_count) * 100
         if self.score < 10:
             print(self.score)
-        self.score = min(self.score, 97.32-random.uniform(3,7))
+        self.score = min(self.score, 97.32 - random.uniform(3,5))
         self.score = round(self.score, 2)
         return self.score
 
@@ -103,6 +103,10 @@ def getWebVideos(search_query, count=20):
                 video_id = videos[-1].video_url.split('v=')[-1]
                 videos[-1].comments = getComments(video_id)
                 videos[-1].video_id = video_id
+                try:
+                    videos[-1].key_phrases = sample_extract_key_phrases(videos[-1].comments)
+                except:
+                    pass
         videos = list(filter(lambda x: x.source == 'youtube', videos))
     except Exception as ex:
         raise ex
