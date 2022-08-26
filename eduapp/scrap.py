@@ -11,8 +11,7 @@ import os
 
 
 
-if __name__ == '__main__':
-    sample_extract_key_phrases()
+
 
 class Video:
     def __init__(self, video_id, title, type=None, thumbnail=None):
