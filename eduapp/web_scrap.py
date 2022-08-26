@@ -7,6 +7,52 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from eduapp.nlp import sample_analyze_sentiment
 from youtube_transcript_api import YouTubeTranscriptApi
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.textanalytics import TextAnalyticsClient
+import os
+
+
+def sample_recognize_custom_entities() -> None:
+    endpoint = ""
+    key = ""
+    project_name = os.environ["CUSTOM_ENTITIES_PROJECT_NAME"]
+    deployment_name = os.environ["CUSTOM_ENTITIES_DEPLOYMENT_NAME"]
+    path_to_sample_document = os.path.abspath(
+        os.path.join(
+            os.path.abspath(__file__),
+            "..",
+            "./text_samples/custom_entities_sample.txt",
+        )
+    )
+
+    text_analytics_client = TextAnalyticsClient(
+        endpoint=endpoint,
+        credential=AzureKeyCredential(key),
+    )
+
+    with open(path_to_sample_document) as fd:
+        document = [fd.read()]
+
+    poller = text_analytics_client.begin_recognize_custom_entities(
+        document,
+        project_name=project_name,
+        deployment_name=deployment_name
+    )
+
+    document_results = poller.result()
+    for custom_entities_result in document_results:
+        if custom_entities_result.kind == "CustomEntityRecognition":
+            for entity in custom_entities_result.entities:
+                print(
+                    "Entity '{}' has category '{}' with confidence score of '{}'".format(
+                        entity.text, entity.category, entity.confidence_score
+                    )
+                )
+        elif custom_entities_result.is_error is True:
+            print("...Is an error with code '{}' and message '{}'".format(
+                custom_entities_result.code, custom_entities_result.message
+                )
+            )
 
 
 class Video:
@@ -64,7 +110,7 @@ class Video:
 
 def getWebVideos(search_query, count=20):
     videos = []
-    subscriptionKey = "864b23f082d74615ae0925a0f0bbfa69"
+    subscriptionKey = "caa5e51054a4486dac373167cb93b9aa"
     endpoint = "https://api.bing.microsoft.com/" + "/v7.0/videos/search"
     headers = {
         'Content-Type': 'application/json',
@@ -101,7 +147,7 @@ def getWebVideos(search_query, count=20):
                 print(videos[-1].comments)
         videos = list(filter(lambda x: x.source == 'youtube', videos))
     except Exception as ex:
-        print(ex)
+        raise ex
     return videos
 
 

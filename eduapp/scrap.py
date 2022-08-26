@@ -7,7 +7,12 @@ import requests
 from eduapp.nlp import sample_analyze_sentiment
 from bs4 import BeautifulSoup
 from youtube_transcript_api import YouTubeTranscriptApi
+import os
 
+
+
+if __name__ == '__main__':
+    sample_extract_key_phrases()
 
 class Video:
     def __init__(self, video_id, title, type=None, thumbnail=None):
@@ -121,5 +126,6 @@ def getScore(video_obj, video_id):
 if __name__ == "__main__":
     # getVideos("python")
     # getComments(video_id="t8pPdKYpowI")
-    print(getCaptions(video_id="t8pPdKYpowI"))
+    # print(getCaptions(video_id="t8pPdKYpowI"))
     print()
+    sample_extract_key_phrases()

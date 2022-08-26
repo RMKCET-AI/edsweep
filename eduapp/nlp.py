@@ -2,16 +2,19 @@ import os
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
+#def
+
 
 def sample_analyze_sentiment(documents):
-    endpoint = "https://edsweep.cognitiveservices.azure.com/"
-    key = "ce2070b4d70b42ccb6332998a5e56e9b"
+    endpoint = "https://rmkedsweep.cognitiveservices.azure.com/"
+    key = "91752d914cc947a0bed9eabbfd77100d"
     text_analytics_client = TextAnalyticsClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     response = text_analytics_client.analyze_sentiment(documents, show_opinion_mining=True)
     results = [doc for doc in response if not doc.is_error]
     for result in results:
         print(result.id, result.sentiment, result.confidence_scores)
     return results
+
 
 
 if __name__ == "__main__":
