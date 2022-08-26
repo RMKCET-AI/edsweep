@@ -19,7 +19,7 @@
 
             width: 100%;
             height: 100vh;
-            background-image: linear-gradient(rgba(12,3,51,0.3),rgba(12,3,51,0.3));
+            background-image: linear-gradient(rgba(12, 3, 51, 0.3), rgba(12, 3, 51, 0.3));
             padding: 0.5%;
             display: flex;
             align-items: center;
@@ -59,12 +59,6 @@
             -moz-border-radius: 3px;
             border-radius: 3px;
             color: #D9230F;
-            cursor: unset;
-            z-index: 2;
-        }
-
-        .search-query :focus {
-            z-index: 2;
         }
 
 
@@ -73,7 +67,8 @@
             /* Added */
             margin-bottom: 10px /* Added */
         }
-        .header{
+
+        .header {
             width: 100%;
             position: absolute;
             top: 0;
@@ -84,58 +79,66 @@
             justify-content: space-between;
 
         }
-        .logo{
+
+        .logo {
             width: 90px;
         }
-        nav ul li{
+
+        nav ul li {
             list-style: none;
             display: inline-block;
             margin-left: 40px;
         }
-        nav ul li a{
-            text-decoration:none;
+
+        nav ul li a {
+            text-decoration: none;
             color: #fff;
             font-size: 17px;
         }
-        .col-12{
+
+        .col-12 {
             text-align: center;
         }
-        .col-12 h1{
+
+        .col-12 h1 {
 
             font-size: 100px;
             color: #fff;
-            font-weight:600;
+            font-weight: 600;
             transition: 0.5s;
         }
-        .col-12:hover{
+
+        .col-12:hover {
             -webkit-text-stroke: 1px black;
             color: transparent;
         }
-        .back-video{
+
+        .back-video {
 
             position: absolute;
             right: 0;
             bottom: 0;
             z-index: -1;
         }
-        @media (min-aspect-ratio: 16/9){
-            .back-video{
+
+        @media (min-aspect-ratio: 16/9) {
+            .back-video {
                 width: 100%;
                 height: auto;
             }
         }
-        @media (max-aspect-ratio: 16/9){
-            .back-video{
+
+        @media (max-aspect-ratio: 16/9) {
+            .back-video {
                 width: auto;
                 height: 100%;
             }
         }
 
 
-
     </style>
 </head>
-<body>
+<body onload="stopLoading()">
 
 <div class="container-fluid">
     <div class="row">
@@ -157,7 +160,7 @@
                     <label for="search_bar"></label><input type="text" id="search_bar" class="search-query form-control"
                                                            placeholder="Search"/>
                     <span class="input-group-btn">
-                        <button type="button" disabled>
+                        <button type="button" onclick="clicker()">
                             <div class="container">
                                 <span class="fa fa-search"></span>
                             </div>
@@ -180,7 +183,8 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ video.video_title }}</h5>
                         <p class="card-text">{{ video.creator }}</p>
-                        <p class="card-text"><small class="text-muted">Video Quality Score : {{ video.score }}</small></p>
+                        <p class="card-text"><small class="text-muted">Video Quality Score : {{ video.score }}</small>
+                        </p>
                     </div>
                     <div class="container my-3">
                         {% if video.source == 'youtube' %}
@@ -203,13 +207,17 @@
                         <li class="page-item">
                             <a class="page-link" href="?page=1">Home</a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                        </li>
                     {% endif %}
                     <li class="page-item active" aria-current="page">
                         <a class="page-link">{{ page_obj.number }}</a>
                     </li>
                     {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                        <li class="page-item"><a class="page-link"
+                                                 href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                        </li>
                         <li class="page-item">
                             <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">End</a>
                         </li>
@@ -218,6 +226,7 @@
             </nav>
         {% endif %}
     </div>
+    <script src="https://cdn.jsdelivr.net/gh/AmagiTech/JSLoader/amagiloader.js"></script>
 
 </div>
 </div>
@@ -229,9 +238,22 @@
 <script>
     document.querySelector('#search_bar').addEventListener('keypress', function (keyboard) {
         if (keyboard.key === 'Enter') {
-            window.location.replace("/results/"+document.getElementById('search_bar').value);
+            window.location.replace("/results/" + document.getElementById('search_bar').value);
+            AmagiLoader.show();
+            setTimeout(() => {
+                AmagiLoader.hide();
+            }, 125000);
         }
     });
+
+    function clicker() {
+        window.location.replace("/results/" + document.getElementById('search_bar').value);
+    }
+
+    function stopLoading() {
+        AmagiLoader.hide();
+    }
+
 </script>
 </body>
 </html>
