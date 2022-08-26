@@ -42,7 +42,7 @@ class Video:
             part='statistics',
             id=self.video_id
         ).execute()['items']
-        likes_count = int(video_costats[0]['statistics']['likeCount'])
+        likes_count = int(video_stats[0]['statistics']['likeCount'])
         views_count = int(video_stats[0]['statistics']['viewCount'])
         comments_count = int(video_stats[0]['statistics']['commentCount'])
         sentimentObjs = sample_analyze_sentiment(self.comments)
